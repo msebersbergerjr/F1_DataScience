@@ -3,7 +3,7 @@ import json
 import os
 from pathlib import Path
 
-# -------------------- RAndomFunctions --------------------
+# -------------------- RandomFunctions --------------------
 def connection(url):
     '''
     Try and Establish a Connection to given website
@@ -83,6 +83,72 @@ def get_driver_info(driver):
                 with open(filepath, 'r', encoding='utf-8') as infile: jsondata = json.load(infile)
     return jsondata
 
+# -------------------- Race Data --------------------
+
+def get_scheduled_races(year):
+    '''Get all the scheduled races of a given year'''
+
+    filepath = Path(f'data/scheduled/')
+    jsondata = dict()
+
+    # Check if scheduled directory exist
+    if not path_exist(filepath):
+        os.mkdir(filepath)
+
+    # Check if scheduled year.json exist
+    filepath = Path(f'data/scheduled/{year}.json')
+    if path_exist(filepath):
+        with open(filepath, 'r', encoding='utf-8') as infile: jsondata = json.load(infile)
+
+    else:
+        # Requests scheudlued races in given year
+        link = f'http://ergast.com/api/f1/{year}.json?limit=1000'
+        jsondata = connection(link)
+        jsondata = jsondata['MRData']['RaceTable']['Races']
+        # Store the data under data/current_drivers.json
+        json_object = json.dumps(jsondata, indent=4)
+        with open(filepath, 'w', encoding='utf-8') as outfile: outfile.write(json_object)
+
+    return jsondata
+
+def get_season_rounds(year):
+    '''return the number of rounds in the given season'''
+
+    filepath = Path(f'../data/scheduled/{year}.json')
+    if not path_exist(filepath):
+        print('Scheduled Year data doesnt exist')
+        raise
+
+    with open(filepath, 'r', encoding='utf-8') as infile: jsondata = json.load(infile)
+    return len(jsondata)
+
+def get_season_round_data(year,_round):
+    '''Gets every lap within a race of a given year'''
+
+    jsondata = dict()
+    filepath = Path(f'../data/races')
+    if not path_exist(filepath):
+        os.mkdir(filepath)
+
+    filepath = Path(f'../data/races/{year}/')
+    if not path_exist(filepath):
+        os.mkdir(filepath)
+
+    # Check if a years round.json exist
+    filepath = Path(f'../data/races/{year}/{_round}.json')
+    if path_exist(filepath):
+        with open(filepath, 'r', encoding='utf-8') as infile: jsondata = json.load(infile)
+    else:
+        # Requests scheudlued races in given year
+        link = f'http://ergast.com/api/f1/{year}/{_round}/laps.json?limit=100000'
+        jsondata = connection(link)
+        jsondata = jsondata['MRData']['RaceTable']['Races'][0]
+        # Store the data under data/current_drivers.json
+        json_object = json.dumps(jsondata, indent=4)
+        with open(filepath, 'w', encoding='utf-8') as outfile: outfile.write(json_object)
+
+    return jsondata
+
 # -------------------- Initialization --------------------
 def init():
     '''Checks if all required directories are created; creates them if not'''
@@ -93,6 +159,7 @@ def init():
     if not path_exist(filepath):
         os.mkdir(filepath)
 
+    # Checks current drivers
     for driver in current_drivers:
         # Check if driver has a unique directory
         filepath = Path(f'data/drivers/{driver}')
@@ -100,6 +167,17 @@ def init():
             os.mkdir(filepath)
         # Check if they have info.json
         get_driver_info(driver)
+    
+    # Checks year data 2012-2022
+    for year in range(2012,2023):
+        get_scheduled_races(year)
+
+    # Checks year round data
+    for year in range(2012,2022):
+        # get the amount of rounds in a year
+        rounds = get_season_rounds(year)
+        for _round in range(1,rounds+1):
+            get_season_round_data(year,_round)
 
 # -------------------- Main --------------------
 if __name__ == '__main__':
