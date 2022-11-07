@@ -114,7 +114,7 @@ def get_scheduled_races(year):
 def get_season_rounds(year):
     '''return the number of rounds in the given season'''
 
-    filepath = Path(f'../data/scheduled/{year}.json')
+    filepath = Path(f'data/scheduled/{year}.json')
     if not path_exist(filepath):
         print('Scheduled Year data doesnt exist')
         raise
@@ -126,16 +126,16 @@ def get_season_round_data(year,_round):
     '''Gets every lap within a race of a given year'''
 
     jsondata = dict()
-    filepath = Path(f'../data/races')
+    filepath = Path(f'data/races')
     if not path_exist(filepath):
         os.mkdir(filepath)
 
-    filepath = Path(f'../data/races/{year}/')
+    filepath = Path(f'data/races/{year}/')
     if not path_exist(filepath):
         os.mkdir(filepath)
 
     # Check if a years round.json exist
-    filepath = Path(f'../data/races/{year}/{_round}.json')
+    filepath = Path(f'data/races/{year}/{_round}.json')
     if path_exist(filepath):
         with open(filepath, 'r', encoding='utf-8') as infile: jsondata = json.load(infile)
     else:
