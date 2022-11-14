@@ -2,6 +2,9 @@
 
 *Data Source*: http://ergast.com/mrd/
 
+Run:
+> streamlit run main.py
+
 ## **Goals**
 ---
 Goal 1: Based on current 2022 drivers, find the probability a driver gets in the top 10 on a track based on their history

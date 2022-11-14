@@ -30,16 +30,6 @@
         "nationality": "Finnish"
     },
     {
-        "driverId": "de_vries",
-        "permanentNumber": "45",
-        "code": "DEV",
-        "url": "http://en.wikipedia.org/wiki/Nyck_de_Vries",
-        "givenName": "Nyck",
-        "familyName": "de Vries",
-        "dateOfBirth": "1995-02-06",
-        "nationality": "Dutch"
-    },
-    {
         "driverId": "gasly",
         "permanentNumber": "10",
         "code": "GAS",
@@ -58,16 +48,6 @@
         "familyName": "Hamilton",
         "dateOfBirth": "1985-01-07",
         "nationality": "British"
-    },
-    {
-        "driverId": "hulkenberg",
-        "permanentNumber": "27",
-        "code": "HUL",
-        "url": "http://en.wikipedia.org/wiki/Nico_H%C3%BClkenberg",
-        "givenName": "Nico",
-        "familyName": "H\u00fclkenberg",
-        "dateOfBirth": "1987-08-19",
-        "nationality": "German"
     },
     {
         "driverId": "latifi",
