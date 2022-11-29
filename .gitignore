@@ -1,4 +1,6 @@
 __pycache__/
 *.py[cod]
+F1Project
+.vscode
 
 notebooks/.ipynb_checkpoints
