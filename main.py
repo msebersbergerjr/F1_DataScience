@@ -154,7 +154,7 @@ def get_score(year,round,current_drivers):
 
     score_list = []
     for driver in current_drivers:
-        score_avg = 0
+        score_avg = 50
         driver_row = working_df.loc[working_df['Drivers'] == driver]
         if not driver_row.empty:
             for lap in driver_row.columns[1:]:
