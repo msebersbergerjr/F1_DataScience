@@ -51,43 +51,98 @@ with col1:
 
 with col2:
     st.markdown("")
-    original_title = '<p style="font-family:Courier New, monospace;font-weight:700; color:white; font-size: 90px;">Rubber Casino</p>'
+    original_title = '<p style="font-family:Courier New, monospace;font-weight: 500; color:white; font-size: 90px;">Rubber Casino</p>'
     st.markdown(original_title, unsafe_allow_html=True)
 
+font_css = """
+<style>
+button[data-baseweb="tab"] {
+  font-family:Courier New, monospace;
+  font-size: 20px;
+  word-spacing: -5px;
+  padding: 20px;
+  
+}
+</style>
+"""
 
-tab1, tab2, tab3, tab4, tab5 = st.tabs(['Introduction','Formula One','Exploratory Analysis','Performance Score','Outcome'])
+st.write(font_css, unsafe_allow_html=True)
 
-with tab1:
+tabs = st.tabs(['Introduction','Formula One','Exploratory Analysis','Performance Score','Outcome'])
 
-    st.subheader("Our name")
-    st.text("We joked that we would build this prediction to bet on the outcome of the Grand Prix.")
-    st.text("Rubber for the wheels, Casino for the gambling.")
+with tabs[0]:
+
+    goal_title = '<p style="font-family:Courier New, monospace;font-weight:500; color:white; font-size: 45px;">Goal</p>'
+    st.markdown(goal_title, unsafe_allow_html=True)
+
+    goal_text = '<p style="font-family:Courier New, monospace;font-weight:500; color:white; font-size: 20px;">We wanted to build a statistical model that can predict the 2022 Grand Prix winners by using historical performance data for Formula One Drivers.</p>'
+    st.markdown(goal_text, unsafe_allow_html=True)
 
     st.markdown("---")
-    st.markdown("")
 
-    st.subheader("Goal")
-    st.text("Build a system to predict the 2022 Grand Prix winners by using performance history of F1 Drivers.")
+    approach_title = '<p style="font-family:Courier New, monospace;font-weight:500; color:white; font-size: 45px;">Approach</p>'
+    st.markdown(approach_title, unsafe_allow_html=True)
+
+    approach_text = '<p style="font-family:Courier New, monospace;font-weight:500; color:white; font-size: 20px;">After collecting the F1 data from the Ergast API, we conducted our EDA and found that we could use the Time variable (per lap) to create derived variables.</p>'
+    approach_text_2 = '<p style="font-family:Courier New, monospace;font-weight:500; color:white; font-size: 20px;"> These derived variables served as the basis for our analysis and predictions.</p>'
+    st.markdown(approach_text, unsafe_allow_html=True)
+    st.markdown(approach_text_2,unsafe_allow_html=True)
+
     st.markdown("---")
 
+    limits_title = '<p style="font-family:Courier New, monospace;font-weight:500; color:white; font-size: 45px;">Limitations</p>'
+    st.markdown(limits_title,unsafe_allow_html=True)
+
+    limits_text = '<p style="font-family:Courier New, monospace;font-weight:500; color:white; font-size: 20px;"> Due to the nature of Formula One, there are too many variables to factor in when attempting to produce an accurate model. </p>'
+    limits_text_2 = '<p style="font-family:Courier New, monospace;font-weight:500; color:white; font-size: 20px;"> Examples of these limitations are Weather, Strategies, Car Models, Track Alterations, Regulations, and Quality of Team Engineers. </p>'
+    st.markdown(limits_text,unsafe_allow_html=True)
+    st.markdown(limits_text_2,unsafe_allow_html=True)
+
+    pic_cols = st.columns(3)
+
+    with pic_cols[1]:
+        st.image('https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/FIA_F1_Austria_2019_Nr._77_Bottas_1.jpg/800px-FIA_F1_Austria_2019_Nr._77_Bottas_1.jpg',width=800,caption=2019)
+    with pic_cols[0]:
+        st.image('https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Alonso_%28Renault%29_qualifying_at_USGP_2005.jpg/800px-Alonso_%28Renault%29_qualifying_at_USGP_2005.jpg',width=1030,caption=2005)
+    with pic_cols[2]:
+        st.image('https://www.formula1.com/content/dam/fom-website/manual/Misc/2021manual/AbuDhabiTrack/Updated%20Abu%20Dhabi%20Circuit%2016x9%20WEB%20Slide%201.jpg.transform/9col/image.jpg',width=800,caption='Track Alterations')
+
+with tabs[1]:
+
+    champ_title = '<p style="font-family:Courier New, monospace;font-weight:500; color:white; font-size: 45px;">Championships</p>'
+    st.markdown(champ_title, unsafe_allow_html=True)
+
+    champ_text = '<p style="font-family:Courier New, monospace;font-weight:500; color:white; font-size: 20px;">There are two types of championships in Formula One, Constructor and Driver.</p>'
+    st.markdown(champ_text,unsafe_allow_html=True)
+    champ_text_2 = '<p style="font-family:Courier New, monospace;font-weight:500; color:white; font-size: 20px;">Championships are scored by the following point system: </p>'
+    st.markdown(champ_text_2,unsafe_allow_html=True)
 
 
-with tab2:
-    st.header("Championships")
-    st.text("There are two types of championships in Formula One.")
-    st.text("The way that championships are scored is a point system.")
     points_data = [{'Position':'Points','1st':25,'2nd':18,'3rd':15,'4th':12,'5th':10,'6th':8,'7th':6,'8th':4,'9th':2,'10th':1,'FL':1}]
-    st.write(pd.DataFrame(points_data).set_index('Position'))
-    st.text("A driver must finish within the top ten to receive a point for setting the fastest lap of the race.")
+    # point_df = pd.DataFrame(points_data).set_index('Position')
+    # point_cols = st.columns(11)
 
-    st.text("")
-    st.text("")
-    st.text("")
+    # for x in range(len(point_df.columns)):
+    #     with point_cols[x]:
+    #         st.write(point_df.columns[x])
+    #         st.text(point_df.loc['Points'][x])
+
+    st.dataframe(pd.DataFrame(points_data).set_index('Position'),use_container_width=True)
+
+    footnote_text = '<p style="font-family:Courier New, monospace;font-weight:500; color:white; font-size: 13px;text-indent: 25px">*A driver must finish within the top ten to receive a point for setting the fastest lap of the race.</p>'
+    st.markdown(footnote_text,unsafe_allow_html=True)
+
+    st.markdown("---")
 
 
+    c_champ_title = '<p style="font-family:Courier New, monospace;font-weight:500; color:white; font-size: 35px;">Constructor Championships</p>'
+    st.markdown(c_champ_title, unsafe_allow_html=True)
 
-    st.subheader("Constructor Championship")
-    st.text("A Constructor is a team within Formula One.")
+    c_champ_text = '<p style="font-family:Courier New, monospace;font-weight:500; color:white; font-size: 17px;">A Constructor is a team within Formula One.</p>'
+    st.markdown(c_champ_text,unsafe_allow_html=True)
+
+    st.write('')
+
     construct_data = [{
         'Team':'Country',
         'Alfa Romeo':'Switzerland',
@@ -100,21 +155,49 @@ with tab2:
         'Mercedes':'Germany',
         'Red Bull':'Austria',
         'Williams':'United Kingdom'
-    }]
-    st.write(pd.DataFrame(construct_data).set_index("Team"))
-    st.text("Constructors are comprised of two driver roles called Primary Driver and Support Driver.")
-    st.text("Funding is provided to teams based on the points earned by their driver. 1 point is worth roughly 1 million dollars.")
+    },{
+        'Team':'Car',
+        'Alfa Romeo':'https://www.formula1.com/content/dam/fom-website/teams/2022/alfa-romeo.png.transform/4col/image.png',
+        'AlphaTauri':'https://www.formula1.com/content/dam/fom-website/teams/2022/alphatauri.png.transform/4col/image.png',
+        'Alpine':'https://www.formula1.com/content/dam/fom-website/teams/2022/teamcar-alpine.png.transform/4col/image.png',
+        'Aston Martin':'https://www.formula1.com/content/dam/fom-website/teams/2022/aston-martin.png.transform/4col/image.png',
+        'Ferrari':'https://www.formula1.com/content/dam/fom-website/teams/2022/ferrari.png.transform/4col/image.png',
+        'Haas':'https://www.formula1.com/content/dam/fom-website/teams/2022/haas-f1-team.png.transform/4col/image.png',
+        'McLaren':'https://www.formula1.com/content/dam/fom-website/teams/2022/teamcar-mclaren.png.transform/4col/image.png',
+        'Mercedes':'https://www.formula1.com/content/dam/fom-website/teams/2022/mercedes.png.transform/4col/image.png',
+        'Red Bull':'https://www.formula1.com/content/dam/fom-website/teams/2022/red-bull-racing.png.transform/4col/image.png',
+        'Williams':'https://www.formula1.com/content/dam/fom-website/teams/2022/williams.png.transform/4col/image.png'
+        }]
+
+    cs_df = pd.DataFrame(construct_data).set_index("Team")
+
+    car_cols = st.columns(10)
+
+    st.write('')
+
+    for x in range(len(cs_df.columns)):
+        with car_cols[x]:
+            st.image(cs_df.loc['Car'][x],width=300)
+            st.write(cs_df.columns[x])
+            st.write(cs_df.loc['Country'][x])
+
+    c_champ_text_2 = '<p style="font-family:Courier New, monospace;font-weight:500; color:white; font-size: 17px;">Constructors are teams with Two Drivers, Engineers, Crew. Drivers are assigned the role of Primary or Support based on early performance in a circuit.</p>'
+    st.markdown(c_champ_text_2,unsafe_allow_html=True)
+
+    c_champ_text_3 = '<p style="font-family:Courier New, monospace;font-weight:500; color:white; font-size: 17px;">Funding is provided to teams based on the points earned by their driver. 1 point is worth roughly 1 million dollars.</p>'
+    st.markdown(c_champ_text_3,unsafe_allow_html=True)
+    
+    st.markdown("---")
+
+    d_champ_title = '<p style="font-family:Courier New, monospace;font-weight:500; color:white; font-size: 35px;">Driver Championships</p>'
+    st.markdown(d_champ_title, unsafe_allow_html=True)
+
+    d_champ_text = '<p style="font-family:Courier New, monospace;font-weight:500; color:white; font-size: 17px;">Points are earned by drivers that place in the Top 10.</p>'
+    st.markdown(d_champ_text,unsafe_allow_html=True)
+    st.markdown('---')
 
 
-    st.text("")
-    st.text("")
-    st.text("")
-
-    st.subheader("Driver Championship")
-    st.text("Points are earned by drivers that place in the Top 10.")
-
-
-with tab3:
+with tabs[2]:
 # -------------------- Data Sets --------------------
     st.title("Data Sets")
     st.header("Scheduled Data")
@@ -142,6 +225,9 @@ with tab3:
     },
     '''
     st.code(code, language=json)
+
+    st.markdown("---")
+
 
     st.header("Race Data")
     st.write("Description")
@@ -198,6 +284,8 @@ with tab3:
     },'''
     st.code(code, language=json)
 
+    st.markdown("---")
+
     st.title("Missing Data")
 
     st.subheader("Experience")
@@ -253,15 +341,19 @@ with tab3:
         original_df[f"Lap {lap['number']}"] = time_list
     st.dataframe(original_df.head(),use_container_width=True)
 
+    st.markdown("---")
+
     st.title("Outliers")
     st.write("We expect there to be a handle full of outliers from our data from the nature of the sport")
     st.write("Expected outliers in lap data results: Pit Stop, Safety Cars, Crashes, Weather, etc...")
     st.write("We left them in since it doesn't hinder out outcome, and also its apart of the sport.")
 
+    st.markdown("---")
+
     
 
 # -------------------- Performance Score --------------------
-with tab4:
+with tabs[3]:
     st.header("Performance Score")
     st.subheader("Description- what is a performance score")
 
@@ -271,12 +363,14 @@ with tab4:
     st.subheader("Raw Data - Time Series")
     df =  get_race(2012, 1)
     st.dataframe(df)
+    st.markdown("---")
     
     # ---------- CONVERTED DATA ----------
     st.subheader("Converted Data - Time Series represented as seconds (float)")
     working_df = df.copy()
     for col in working_df.columns[1:]: working_df[col] = working_df[col].apply(lambda x : time_to_nanoseconds(x))
     st.dataframe(working_df)
+    st.markdown("---")
 
     # ---------- Lap time Vertically ----------
     st.subheader("Lap times Vertically")
@@ -287,6 +381,7 @@ with tab4:
     fig.update_layout(height=1000)
 
     st.plotly_chart(fig,use_container_width=True, height=1000)
+    st.markdown("---")
 
     # ---------- Lap time Horizontally ----------
     st.subheader("Lap times Horizontally")
@@ -304,6 +399,7 @@ with tab4:
     fig.update_layout(height=1000)
 
     st.plotly_chart(fig,use_container_width=True, height=1000)
+    st.markdown("---")
 
     # ---------- Breakdown ----------
 
@@ -342,6 +438,9 @@ with tab4:
         st.subheader('Score')
         st.metric(label="", value=round(p_diff,5))
 
+    st.markdown("---")
+
+
     # ---------- Mean vs Median ----------
     st.subheader("Mean vs Median")
     st.write("We had to determine the best fit for a true comparison line when calculating a score")
@@ -354,23 +453,27 @@ with tab4:
     fig.update_xaxes(showgrid=False)
     fig.update_layout(height=1000)
     st.plotly_chart(fig,use_container_width=True, height=1000)
+    st.markdown("---")
 
     # ---------- Total picture ----------
     st.subheader("Performance Score for Current Drivers and Current Circuits")
     pp_df = pd.read_csv(Path('data/pp.csv'))
     st.dataframe(pp_df,use_container_width=True)
+    st.markdown("---")
 
     # ---------- Normalize using ZScore ----------
     st.subheader("Normalize using ZScore")
     ppnorm_df = pd.read_csv(Path('data/pp_norm.csv'))
     st.dataframe(ppnorm_df,use_container_width=True)
+    st.markdown("---")
 
     # ---------- Points outcome ----------
     st.subheader("Predicted Points per circuit")
     champ_df = pd.read_csv(Path('data/driver_champ.csv'))
     st.dataframe(champ_df,use_container_width=True)
+    st.markdown("---")
 
-with tab5:
+with tabs[4]:
     st.title("Outcome")
     champ_df['Total'] = champ_df.sum(axis=1)
     champ_df = champ_df.sort_values('Total',ascending=False)
@@ -379,16 +482,16 @@ with tab5:
     with col1:
         image = Image.open(Path(f'data/images/{champ_df.iloc[1]["Driver"]}.jpg'))
         st.image(image)
-        st.subheader(f'2nd place  Driver: {champ_df.iloc[1]["Driver"]}  Points: {champ_df.iloc[1]["Total"]}')
+        st.subheader(f'2nd: {champ_df.iloc[1]["Driver"].capitalize()}\n Points: {champ_df.iloc[1]["Total"]}')
 
     with col2:
         image = Image.open(Path(f'data/images/{champ_df.iloc[0]["Driver"]}.jpg'))
         st.image(image)
-        st.subheader(f'1st place  Driver: {champ_df.iloc[1]["Driver"]}  Points: {champ_df.iloc[1]["Total"]}')
+        st.subheader(f'1st:  {champ_df.iloc[0]["Driver"].capitalize()}\n  Points:  {champ_df.iloc[0]["Total"]}')
 
     with col3:
         image = Image.open(Path(f'data/images/{champ_df.iloc[2]["Driver"]}.jpg'))
         st.image(image)
-        st.subheader(f'3rd place  Driver: {champ_df.iloc[1]["Driver"]}  Points: {champ_df.iloc[1]["Total"]}')
+        st.subheader(f'3rd: {champ_df.iloc[2]["Driver"].capitalize()}\n  Points: {champ_df.iloc[2]["Total"]}')
 
 st.write("")
