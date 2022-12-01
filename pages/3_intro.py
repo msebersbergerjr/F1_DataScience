@@ -201,7 +201,9 @@ with tabs[2]:
 # -------------------- Data Sets --------------------
     st.title("Data Sets")
     st.header("Scheduled Data")
-    st.write("Description")
+    st.write("Provides us all the circuits within a season represented as rounds.")
+    st.write("This allows us to find the round, given a year of a circuit since they change order every year")
+
     st.subheader("Important Variables: season; round; circuitId")
     code = '''
     {
@@ -230,7 +232,10 @@ with tabs[2]:
 
 
     st.header("Race Data")
-    st.write("Description")
+    st.write("Bulk of the whole project. It provides lap data on a given year and circuit")
+    st.write("It tells us every drivers lap time throughout the entire race, which is the foundation for our project")
+    st.write("Although it does not inform us on a DNF status, if it was a mechanical issue or a driver issue, weather, tire type")
+
     st.subheader("Important Variables: round; driverId; time")
 
     code = '''{
@@ -346,7 +351,7 @@ with tabs[2]:
     st.title("Outliers")
     st.write("We expect there to be a handle full of outliers from our data from the nature of the sport")
     st.write("Expected outliers in lap data results: Pit Stop, Safety Cars, Crashes, Weather, etc...")
-    st.write("We left them in since it doesn't hinder out outcome, and also its apart of the sport.")
+    st.write("We left them in since it doesn't hinder the outcome, and also its apart of the sport.")
 
     st.markdown("---")
 
@@ -355,7 +360,10 @@ with tabs[2]:
 # -------------------- Performance Score --------------------
 with tabs[3]:
     st.header("Performance Score")
-    st.subheader("Description- what is a performance score")
+    st.subheader("Score we give to a driver on a lap to lap basis depending on how well there time is compared to the rest of the drivers")
+
+    st.subheader("This is how we rate our drivers, but it does not incorporate the team aspect.")
+
 
     st.subheader("Season: 2012 Round: 1")
 
@@ -374,6 +382,7 @@ with tabs[3]:
 
     # ---------- Lap time Vertically ----------
     st.subheader("Lap times Vertically")
+    st.subheader("Outliers showing pit stops, individual mistakes, safety cars, etc..")
     fig = go.Figure()
     for col in working_df.columns[1:]:
         fig.add_trace(go.Box(y=working_df[col].values.tolist(), name=col, boxmean=True))
@@ -385,6 +394,7 @@ with tabs[3]:
 
     # ---------- Lap time Horizontally ----------
     st.subheader("Lap times Horizontally")
+    st.subheader("Shows who is over or under performing")
     median = working_df[1:].median(axis=0, skipna=True).tolist()
     median_list = []
     for _ in range(len(median)): median_list.append(statistics.median(median))
@@ -443,8 +453,8 @@ with tabs[3]:
 
     # ---------- Mean vs Median ----------
     st.subheader("Mean vs Median")
-    st.write("We had to determine the best fit for a true comparison line when calculating a score")
-    st.write("What we learned is that the mean line allows for me leeway when giving score, while the median was more strict")
+    st.subheader("We had to determine the best fit for a true comparison line when calculating a score")
+    st.subheader("What we learned is that the mean line allows for me leeway when giving score, while the median was more strict")
     median = working_df[1:].median(axis=0, skipna=True).tolist()
     average = working_df[1:].mean(axis=0, skipna=True).tolist()
     fig = go.Figure()
@@ -457,24 +467,36 @@ with tabs[3]:
 
     # ---------- Total picture ----------
     st.subheader("Performance Score for Current Drivers and Current Circuits")
+
+    st.subheader("Big Picture Track by track, we get the performance score of a driver based upon their history")
+
+    st.subheader("Experience factors in majorly. Hamilton vs Gasly")
+
     pp_df = pd.read_csv(Path('data/pp.csv'))
     st.dataframe(pp_df,use_container_width=True)
     st.markdown("---")
 
     # ---------- Normalize using ZScore ----------
     st.subheader("Normalize using ZScore")
+
+    st.subheader("Attempt to Normalize the data and also fill in any missing data.")
+    st.subheader("This adds leeway to DNF's")
+
     ppnorm_df = pd.read_csv(Path('data/pp_norm.csv'))
     st.dataframe(ppnorm_df,use_container_width=True)
     st.markdown("---")
 
     # ---------- Points outcome ----------
     st.subheader("Predicted Points per circuit")
+
+    st.subheader("Assign points to track position")
+
     champ_df = pd.read_csv(Path('data/driver_champ.csv'))
     st.dataframe(champ_df,use_container_width=True)
     st.markdown("---")
 
 with tabs[4]:
-    st.title("Outcome")
+    st.title("Our Driver Championship")
     champ_df['Total'] = champ_df.sum(axis=1)
     champ_df = champ_df.sort_values('Total',ascending=False)
 
@@ -493,5 +515,49 @@ with tabs[4]:
         image = Image.open(Path(f'data/images/{champ_df.iloc[2]["Driver"]}.jpg'))
         st.image(image)
         st.subheader(f'3rd: {champ_df.iloc[2]["Driver"].capitalize()}\n  Points: {champ_df.iloc[2]["Total"]}')
+
+    st.title("Actual Driver Championship")
+    champ_df['Total'] = champ_df.sum(axis=1)
+    champ_df = champ_df.sort_values('Total',ascending=False)
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        image = Image.open(Path(f'data/images/leclerc.jpg'))
+        st.image(image)
+        st.subheader(f'2nd: Leclerc\n Points: 308')
+
+    with col2:
+        image = Image.open(Path(f'data/images/max_verstappen.jpg'))
+        st.image(image)
+        st.subheader(f'1st: Max_Verstappen\n Points: 454')
+
+    with col3:
+        image = Image.open(Path(f'data/images/perez.jpg'))
+        st.image(image)
+        st.subheader(f'3rd: Perez\n Points: 305')
+
+    our = champ_df['Driver'].values.tolist()
+    actual = ['max_verstappen','leclerc','perez','russell','sainz','hamilton','norris','ocon','alonso','bottas','ricciardo','vettle','kevin_magnussen','gasly','stroll','mick_schumacher','tsunoda','zhou','albon','latifi']
+    off = ['-5 Positions','-10 Positions','+2  Positions','-6 Positions','-6 Positions','+3 Positions','+5 Positions','+3 Positions','Correct','+2 Positions','-3 Positions','-7 Positions','+6 Positions','-1 Positions','-2 Positions','+3 Positions','+13 Positions','+2 Positions','-1 Positions','+1 Positions']
+    accuracy = (sum(1 for x,y in zip(actual,our) if x == y)/len(actual)*100)
+    st.title(f"Accuracy: {accuracy}")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.subheader("Our")
+        for driver in our:
+            st.subheader(driver)
+
+    with col2:
+        st.subheader("Actual")
+        for driver in actual:
+            st.subheader(driver)
+
+    with col3:
+        st.subheader("Far Off")
+        for driver in off:
+            st.subheader(driver)
+
 
 st.write("")
